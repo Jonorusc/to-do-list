@@ -160,7 +160,6 @@ export const CardItem = styled(FlexColumn)`
   background-color: ${(props) => (props.active ? "#f2f2f2" : "transparent")};
   border-radius: ${(props) => (props.active ? "20px" : "none")};
   transition: all 0.3s;
-  
 `
 
 export const Indicator = styled.div`
@@ -178,7 +177,7 @@ export const CardArea = styled.textarea.attrs({
   placeholder: "Description",
 })`
   margin-top: 20px;
-  margin-left: 16px;
+  margin-left: 21px;
   border: none;
   resize: none;
   max-width: 345px;
@@ -197,18 +196,18 @@ export const CardArea = styled.textarea.attrs({
 export const CardBtn = styled.button`
   display: flex;
   column-gap: 0.6rem;
-  align-items: center; 
-  outline: none; 
-  border: none; 
+  align-items: center;
+  outline: none;
+  border: none;
   border-radius: 8px;
   height: 30px;
   width: 134px;
   justify-content: center;
-  transition: all .3s;
-  background-color: ${props => (props.discard ? "#E7D6D6" : "#DADEE9")};
+  transition: all 0.3s;
+  background-color: ${(props) => (props.discard ? "#E7D6D6" : "#DADEE9")};
   cursor: pointer;
   &:hover {
-    background-color: ${props => (props.discard ? "#E7D6D670" : "#DADEE970")};
+    background-color: ${(props) => (props.discard ? "#E7D6D670" : "#DADEE970")};
   }
   &:active {
     transform: scale(0.99);
@@ -216,7 +215,7 @@ export const CardBtn = styled.button`
   &img {
     width: 14px;
     height: 11px;
-  } 
+  }
 `
 
 export const CardFlex = styled(Flex)`
@@ -224,6 +223,6 @@ export const CardFlex = styled(Flex)`
   padding: 10px;
   border-radius: 20px;
   &:hover {
-    background-color: #f2f2f2; 
+    background-color: #f2f2f2;
   }
 `
