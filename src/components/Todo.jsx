@@ -2,13 +2,17 @@ import { Htitle, Card, CardHead, CardBody } from "./styles"
 import TodoItem from "./TodoItem"
 import React, { useRef, useState } from "react"
 
-export default function Todo({ setDrag, tasks, column, items, setItems}) {
-  const [dragging, setDragging] = useState(false)
-  
+export default function Todo({ setDragging, dragging, setAction, tasks, column, items, setItems}) {  
   const cardRef = useRef()
   const onDrop = (e) => {
     e.preventDefault()
-    setDrag({ target: column, params: null, event: e })
+    
+    let temp = dragging.items 
+    temp?.push(column)
+    
+    setAction({ 
+      target: dragging.items !== null ? temp : column
+    })
     removeAnimation(e)
   }
 
@@ -20,16 +24,6 @@ export default function Todo({ setDrag, tasks, column, items, setItems}) {
   }
 
   const dropLeave = (e) => removeAnimation(e)
-
-
-  // items
-
-  const itemDragStart = (e) => {
-    console.log(e)
-    setDragging(true)
-  }
-
-  // end items
 
   const removeAnimation = e => {
     if (e.target === cardRef.current) {
@@ -49,7 +43,8 @@ export default function Todo({ setDrag, tasks, column, items, setItems}) {
           return (
             <React.Fragment key={i}>
               <TodoItem 
-                setDrag={setDrag} 
+                dragging={dragging}
+                setDragging={setDragging}
                 task={task} 
                 column={column} items={items} 
                 setItems={setItems} 

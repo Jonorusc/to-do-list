@@ -115,6 +115,7 @@ export const Columns = styled.div`
   margin: 0 90px;
   width: calc(100% - 180px);
   display: flex;
+  justify-content: center;
   column-gap: 64px;
   z-index: 999;
   box-sizing: border-box;

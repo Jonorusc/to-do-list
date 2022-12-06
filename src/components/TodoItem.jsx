@@ -2,12 +2,15 @@ import { Text, CardItem, Indicator, CardArea, CardBtn, CardFlex, FlexIndicator }
 import Save from "../medias/svg/save.svg"
 import Discard from "../medias/svg/discard.svg"
 import Done from "../medias/svg/done.svg"
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 
-export default function TodoItem({ task, column, items, setItems }) {
+export default function TodoItem({ dragging, setDragging, task, column, items, setItems }) {
   const [_task, setTask] = useState(task)
   const [description, setDescription] = useState(task.description)
   const [openStatus, setOpenStatus] = useState(false)
+  const dragItemNode = useRef()
+
+
   const activeOn = (_) => {
     task = { ..._task, active: !_task.active }
     setTask(task)
@@ -15,7 +18,7 @@ export default function TodoItem({ task, column, items, setItems }) {
 
   const changeStatusItem = (val) => {
     items.forEach((item, i) => {
-      if (item.id === task.id) {
+      if (item.id === _task.id) {
         // remove from the items and add a new one
         const _items = items
         _items.splice(i, 1)
@@ -26,8 +29,23 @@ export default function TodoItem({ task, column, items, setItems }) {
     })
   }
 
+  const onDrag = e => {
+    // sort task when dragging
+    // dragItemNode.current = e.target
+
+    setDragging({ ...dragging, items: [_task]})
+  }
+
+  const onEnd = e => {
+    e.preventDefault()
+    setDragging({ ...dragging, items: null})
+  }
+  const dragOver = e => {
+    // console.log('over',e)
+  }
+
   return (
-    <CardItem active={_task.active} draggable="true">
+    <CardItem active={_task.active} draggable="true" onDragStart={onDrag} onDragEnd={onEnd} onDragOver={dragOver}>
       <CardFlex gap="0.8rem" onDoubleClick={activeOn}>
         {!column.indicator.done ? (
           <Indicator size={column.indicator.size} filled={column.indicator.filled} inprogress={column.indicator.inprogress} onClick={() => setOpenStatus((val) => !val)} />
