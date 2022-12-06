@@ -46,21 +46,18 @@ export const $columns = [
 
 export const $items = [
   {
-    id: 0,
     status: 0,
-    active: true,
+    active: false,
     title: 'Get the trash out',
     description: 'im going',
   },
   {
-    id: 1,
     status: 1,
     active: false,
     title: 'Bathe the dog',
     description: 'My dog is crazy!',
   },
   {
-    id: 2,
     status: 2,
     active: false,
     title: 'Pay my rent',

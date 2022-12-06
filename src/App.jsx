@@ -1,57 +1,26 @@
 import { Body, FlexColumn, Columns, ShadowBox, Htitle, Title, Text } from "./components/styles"
 import { $columns, $items } from "./data/data"
 
-import React, { useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Todo from "./components/Todo"
+import Task from "./components/Task"
 
 import Brand from "./medias/svg/brand.svg"
 
 function App() {
+  const columns = $columns;
   const [items, setItems] = useState($items)
-  const [columns, setColumns] = useState($columns)
-  const [description, setDescription] = useState("")
-  const columnRef = useRef()
-  const [dragging, setDragging] = useState(false)
+  const [drag, setDrag] = useState({ target: null, params: null })
+  const [newTask, setNewTask] = useState(false)
 
-  const dragStart = e => {
-    setDragging(e.target)
-  } 
+  // remove default pattern
+  const targetDragOver = e =>  e.preventDefault()
+  const targetDrop = e => e.preventDefault()
 
-  const onDrag = e => {
-    
-  }
-
-  const dragEnter = e => {
-  }
-  
-  const dragLeave = e => {
-  }
-
-  const targetDragOver = e => {
-    e.preventDefault();
-  }
-  
-  const targetDragEnter = e => {
-    
-  }
-
-  const targetDragLeave = e => {
-    e.target.style.transform = "unset"
-  }
-
-  const targetDrop = e => {
-    e.preventDefault();
-    // dragging.parentNode.removeChild(dragging);
-    // chamar nova task aqui
-    columnRef.current.childNodes.forEach((card) => {
-      console.log(card)
-     if(e.target.contains(card) || e.target.contains(card.firstElementChild)) {
-       console.log('nova task')
-        e.target.style.backgroundColor = "#f2f2f245"
-     }
-    })
-    
-  }
+  // I'm taking the data from Todo.jsx, if there was a drop event on one of the cards
+  useEffect(() => {
+    if(drag.target !== null) setNewTask(true)
+  }, [drag])
 
   return (
     <Body>
@@ -60,23 +29,31 @@ function App() {
         <Htitle>Room of Thoughts</Htitle>
         <Title>Don't think, throw in the room</Title>
       </FlexColumn>
-      <ShadowBox draggable="true" onDrag={onDrag} onDragStart={dragStart} onDragEnter={dragEnter} onDragLeave={dragLeave}>
+      <ShadowBox draggable="true" >
         <Text>Start dragging this task to create a new one</Text>
       </ShadowBox>
-      <Columns ref={columnRef} onDragOver={targetDragOver} onDrop={targetDrop} onDragEnter={targetDragEnter} onDragLeave={targetDragLeave}>
+      <Columns onDragOver={targetDragOver} onDrop={targetDrop}>
         {columns.map((col, i) => {
           const tasks = (_) => items.filter((item) => item.status === col.id)
           return (
             <Todo
+              setDrag={setDrag}
               key={col.id} tasks={tasks()} 
               column={col} 
               setItems={setItems} 
-              setDescription={setDescription} 
             />
           )
           
         })}
       </Columns>
+      {newTask 
+      ? <Task 
+        items={items}
+        setItems={setItems} 
+        column={drag.target}
+        setNewTask={setNewTask}
+      /> 
+      : null}
     </Body>
   )
 }

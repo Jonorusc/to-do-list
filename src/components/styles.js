@@ -17,6 +17,7 @@ export const Body = styled.section`
   margin-right: auto;
   padding: 1.6rem 0;
   box-sizing: border-box;
+  position: relative;
   &img {
     width: 108px;
     height: 112px;
@@ -130,6 +131,7 @@ export const Card = styled(FlexColumn)`
     0px 42.4737px 25.9293px rgba(0, 0, 0, 0.0276031), 0px 23.6521px 14.4391px rgba(0, 0, 0, 0.0223931), 0px 10.1726px 6.21015px rgba(0, 0, 0, 0.0154995);
   border-radius: 40px;
   box-sizing: border-box;
+  transition: all 0.3s;
 `
 export const CardHead = styled(Flex)`
   padding: 0 10px;
@@ -224,5 +226,43 @@ export const CardFlex = styled(Flex)`
   border-radius: 20px;
   &:hover {
     background-color: #f2f2f2;
+  }
+`
+
+export const NewTask = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  max-height: 350px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 22px;
+  z-index: 1000;
+  box-shadow: 0px 45px 80px rgba(0, 0, 0, 0.07), 0px 18.7999px 33.4221px rgba(0, 0, 0, 0.0503198), 0px 10.0513px 17.869px rgba(0, 0, 0, 0.0417275), 0px 5.6347px 10.0172px rgba(0, 0, 0, 0.035),
+    0px 2.99255px 5.32008px rgba(0, 0, 0, 0.0282725), 0px 1.24527px 2.21381px rgba(0, 0, 0, 0.0196802);
+  input {
+    margin-left: 0.3rem;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    font-weight: 500;
+    background-color: inherit;
+    &::placeholder {
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+  textarea {
+    width: calc(100% - 20px)!important;
+    font-weight: 500!important;
+    &::placeholder {
+      font-size: 20px;
+      font-weight: 500!important;
+    }
+    &:hover {
+      background-color: #f2f2f260!important;
+    }
   }
 `
