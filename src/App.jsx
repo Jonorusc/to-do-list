@@ -1,7 +1,7 @@
 import { Body, FlexColumn, Columns, ShadowBox, Htitle, Title, Text } from "./components/styles"
 import { $columns, $items } from "./data/data"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import Todo from "./components/Todo"
 import Task from "./components/Task"
 
@@ -10,8 +10,9 @@ import Brand from "./medias/svg/brand.svg"
 function App() {
   const columns = $columns;
   const [items, setItems] = useState($items)
-  const [drag, setDrag] = useState({ target: null, params: null })
+  const [drag, setDrag] = useState({ target: null, params: null, event: null })
   const [newTask, setNewTask] = useState(false)
+  const newTaskRef = useRef()
 
   // remove default pattern
   const targetDragOver = e =>  e.preventDefault()
@@ -19,6 +20,7 @@ function App() {
 
   // I'm taking the data from Todo.jsx, if there was a drop event on one of the cards
   useEffect(() => {
+    console.log(drag.event)
     if(drag.target !== null) setNewTask(true)
   }, [drag])
 
@@ -29,7 +31,7 @@ function App() {
         <Htitle>Room of Thoughts</Htitle>
         <Title>Don't think, throw in the room</Title>
       </FlexColumn>
-      <ShadowBox draggable="true" >
+      <ShadowBox draggable="true" ref={newTaskRef}>
         <Text>Start dragging this task to create a new one</Text>
       </ShadowBox>
       <Columns onDragOver={targetDragOver} onDrop={targetDrop}>

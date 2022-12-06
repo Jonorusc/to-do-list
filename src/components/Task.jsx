@@ -8,8 +8,8 @@ import React, { useState, useRef } from "react"
 export default function Task({ items, setItems, column, setNewTask }) {
   const [description, setDescription] = useState("")
   const [title, setTitle] = useState("")
-  const titleRef = useRef()
-  const descriptionRef = useRef()
+  const titleRef = useRef("")
+  const descriptionRef = useRef("")
   
   const createTask = _ => {
     if(description.length < 7) {

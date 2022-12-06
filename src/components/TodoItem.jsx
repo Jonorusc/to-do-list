@@ -3,7 +3,6 @@ import Save from "../medias/svg/save.svg"
 import Discard from "../medias/svg/discard.svg"
 import Done from "../medias/svg/done.svg"
 import React, { useState } from "react"
-import clickOutSide from "../helpers/clickOutSide"
 
 export default function TodoItem({ task, column, items, setItems }) {
   const [_task, setTask] = useState(task)
@@ -28,7 +27,7 @@ export default function TodoItem({ task, column, items, setItems }) {
   }
 
   return (
-    <CardItem active={_task.active}>
+    <CardItem active={_task.active} draggable="true">
       <CardFlex gap="0.8rem" onDoubleClick={activeOn}>
         {!column.indicator.done ? (
           <Indicator size={column.indicator.size} filled={column.indicator.filled} inprogress={column.indicator.inprogress} onClick={() => setOpenStatus((val) => !val)} />

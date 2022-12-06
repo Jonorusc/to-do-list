@@ -165,6 +165,11 @@ export const CardItem = styled(FlexColumn)`
   border-radius: ${(props) => (props.active ? "20px" : "none")};
   transition: all 0.3s;
   position: relative;
+  &:active {
+    border: 1px dashed #212121;
+    visibility: 0.6;
+    border-radius: 20px;
+  }
 `
 
 export const Indicator = styled.div`
@@ -258,14 +263,14 @@ export const NewTask = styled.div`
     }
   }
   textarea {
-    width: calc(100% - 20px)!important;
-    font-weight: 500!important;
+    width: calc(100% - 20px) !important;
+    font-weight: 500 !important;
     &::placeholder {
       font-size: 20px;
-      font-weight: 500!important;
+      font-weight: 500 !important;
     }
     &:hover {
-      background-color: #f2f2f260!important;
+      background-color: #f2f2f260 !important;
     }
   }
 `
@@ -283,11 +288,12 @@ export const FlexIndicator = styled.div`
   transform: translate(80px, -50%);
   padding: 0.4rem;
   background-color: #cdced1;
-  border-top-left-radius: 20px; 
+  border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  div,img {
+  div,
+  img {
     width: 15px;
     height: 15px;
   }
