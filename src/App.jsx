@@ -40,6 +40,7 @@ function App() {
               setDrag={setDrag}
               key={col.id} tasks={tasks()} 
               column={col} 
+              items={items}
               setItems={setItems} 
             />
           )

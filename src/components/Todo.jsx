@@ -2,7 +2,7 @@ import { Htitle, Card, CardHead, CardBody } from "./styles"
 import TodoItem from "./TodoItem"
 import React, { useRef } from "react"
 
-export default function Todo({ setDrag, tasks, column, setItems}) {
+export default function Todo({ setDrag, tasks, column, items, setItems}) {
   const cardRef = useRef()
   const onDrop = (e) => {
     e.preventDefault()
@@ -36,7 +36,7 @@ export default function Todo({ setDrag, tasks, column, setItems}) {
         {tasks.map((task, i) => {
           return (
             <React.Fragment key={i}>
-              <TodoItem setDrag={setDrag} task={task} column={column} setItems={setItems} />
+              <TodoItem setDrag={setDrag} task={task} column={column} items={items} setItems={setItems} />
             </React.Fragment>
           )
         })}

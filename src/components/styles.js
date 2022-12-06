@@ -56,6 +56,7 @@ export const Text = styled.span`
   font-size: ${(props) => (props.active ? "20px" : "16px")};
   font-weight: ${(props) => (props.active ? "500" : "400")};
   line-height: 22px;
+  min-height: 20px;
   letter-spacing: 0em;
   text-align: center;
   position: relative;
@@ -116,11 +117,12 @@ export const Columns = styled.div`
   display: flex;
   column-gap: 64px;
   z-index: 999;
+  box-sizing: border-box;
 `
 
 // Card
 export const Card = styled(FlexColumn)`
-  width: 400px;
+  width: 350px;
   height: 452px;
   padding: 28px;
   background-color: blue;
@@ -162,10 +164,10 @@ export const CardItem = styled(FlexColumn)`
   background-color: ${(props) => (props.active ? "#f2f2f2" : "transparent")};
   border-radius: ${(props) => (props.active ? "20px" : "none")};
   transition: all 0.3s;
+  position: relative;
 `
 
 export const Indicator = styled.div`
-  content: "";
   width: ${(props) => (props.size ? props.size : "8px")};
   height: ${(props) => (props.size ? props.size : "8px")};
   background-color: ${(props) => (props.filled ? props.filled : "white")};
@@ -224,6 +226,7 @@ export const CardFlex = styled(Flex)`
   cursor: pointer;
   padding: 10px;
   border-radius: 20px;
+  position: relative;
   &:hover {
     background-color: #f2f2f2;
   }
@@ -264,5 +267,28 @@ export const NewTask = styled.div`
     &:hover {
       background-color: #f2f2f260!important;
     }
+  }
+`
+export const FlexIndicator = styled.div`
+  display: flex;
+  column-gap: 1rem;
+  justify-content: center;
+  z-index: 1000;
+  row-gap: 1rem;
+  position: absolute;
+  width: calc(100% - 100px);
+  height: 20px;
+  top: 50%;
+  left: 2px;
+  transform: translate(80px, -50%);
+  padding: 0.4rem;
+  background-color: #cdced1;
+  border-top-left-radius: 20px; 
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  div,img {
+    width: 15px;
+    height: 15px;
   }
 `

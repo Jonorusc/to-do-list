@@ -20,12 +20,13 @@ export default function Task({ items, setItems, column, setNewTask }) {
       titleRef.current.placeholder = "You must to enter atleast 7 characters"
     } else {
       setItems([...items, {
+        id: items.length,
         status: column.id,
         active: false,
         title,
         description,
       }])
-      console.log(items)
+      setNewTask(false)
     }
   }
   
