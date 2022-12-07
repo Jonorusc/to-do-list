@@ -4,7 +4,7 @@ Hellow everyone!
 I applied for a react job and the challenge was to create a TO-do List, however I had never done something draggable before, it was my first time. I think it turned out pretty good, I did it with little time
 
 
-video: url
+video: https://youtu.be/8fBWsZt-f9Y
 
 
 
