@@ -8,7 +8,6 @@ import Brand from "./medias/svg/brand.svg"
 
 
 function App() {
-  const columns = $columns
   const [items, setItems] = useState($items)
   const [dragging, setDragging] = useState({ task: false, items: null })
   const [action, setAction] = useState({ target: null })
@@ -58,7 +57,7 @@ function App() {
         <Text>Start dragging this task to create a new one</Text>
       </ShadowBox>
       <Columns onDragOver={targetDragOver} onDrop={targetDrop}>
-        {columns.map((col, i) => {
+        {$columns.map((col, i) => {
           const tasks = (_) => items.filter((item) => item.status === col.id)
           return <Todo setDragging={setDragging} dragging={dragging} setAction={setAction} key={col.id} tasks={tasks()} column={col} items={items} setItems={setItems} />
         })}
