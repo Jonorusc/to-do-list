@@ -134,7 +134,7 @@ export const Card = styled(FlexColumn)`
     0px 42.4737px 25.9293px rgba(0, 0, 0, 0.0276031), 0px 23.6521px 14.4391px rgba(0, 0, 0, 0.0223931), 0px 10.1726px 6.21015px rgba(0, 0, 0, 0.0154995);
   border-radius: 40px;
   box-sizing: border-box;
-  transition: all 0.3s;
+  transition: all 0.2s;
 `
 export const CardHead = styled(Flex)`
   padding: 0 10px;
@@ -152,7 +152,6 @@ export const CardBody = styled(FlexColumn)`
   margin-top: 1.5rem;
   row-gap: 8px;
   max-height: 350px;
-  overflow-y: auto;
   box-sizing: border-box;
 `
 
@@ -160,7 +159,7 @@ export const CardItem = styled(FlexColumn)`
   align-items: unset;
   column-gap: 0.6rem;
   max-width: 400px;
-  height: ${(props) => (props.active ? "181px" : "unset")};
+  height: ${(props) => (props.active ? "181px" : "auto")};
   /* padding: 15px 10px; */
   background-color: ${(props) => (props.active ? "#f2f2f2" : "transparent")};
   border-radius: ${(props) => (props.active ? "20px" : "none")};
@@ -251,18 +250,6 @@ export const NewTask = styled.div`
   z-index: 1000;
   box-shadow: 0px 45px 80px rgba(0, 0, 0, 0.07), 0px 18.7999px 33.4221px rgba(0, 0, 0, 0.0503198), 0px 10.0513px 17.869px rgba(0, 0, 0, 0.0417275), 0px 5.6347px 10.0172px rgba(0, 0, 0, 0.035),
     0px 2.99255px 5.32008px rgba(0, 0, 0, 0.0282725), 0px 1.24527px 2.21381px rgba(0, 0, 0, 0.0196802);
-  input {
-    margin-left: 0.3rem;
-    border: none;
-    outline: none;
-    font-size: 20px;
-    font-weight: 500;
-    background-color: inherit;
-    &::placeholder {
-      font-size: 20px;
-      font-weight: 500;
-    }
-  }
   textarea {
     width: calc(100% - 20px) !important;
     font-weight: 500 !important;
@@ -275,6 +262,49 @@ export const NewTask = styled.div`
     }
   }
 `
+
+export const Input = styled.input.attrs({
+  type: "text",
+  placeholder: "Enter a title",
+})`
+  margin-left: 0.3rem;
+  border: none;
+  outline: none;
+  font-size: 20px;
+  font-weight: 500;
+  background-color: inherit;
+  position: relative;
+  &::placeholder {
+    font-size: 20px;
+    font-weight: 500;
+  }
+`
+
+export const Error = styled.div`
+  padding: 0.5rem;
+  background-color: #212121;
+  position: absolute;
+  z-index: 1000;
+  color: white;
+  border-radius: 10px;
+  top: ${(props) => (props.top ? props.top : "70px")};
+  right: ${(props) => (props.right ? props.right : "-150px")};
+  transition: all .2s;
+  visibility: ${(props) => (props.active ? 'show' : 'hidden')};;
+  transform: ${(props) => (props.active ? 'unset' : 'translateX(-20px)')};
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -9px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+
+    border-right: 10px solid #212121;
+  }
+`
+
 export const FlexIndicator = styled.div`
   display: flex;
   column-gap: 1rem;
