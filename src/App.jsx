@@ -13,8 +13,25 @@ import React, { useState, useRef } from "react"
 function App() {
   const [items, setItems] = useState($items)
   const [columns, setColumns] = useState($columns)
-  const [dragging, setDragging] = useState({ target: undefined, columnId: undefined }) // undefined | String
+  const [dragging, setDragging] = useState({ target: undefined, columnId: undefined, item: undefined, column: undefined })
   const [newTask, setNewTask] = useState(false)
+
+  const setItemColumn = (columnId, item, column) => {
+    if (column.id === columnId) return
+
+    let _columns = [...columns]
+
+    // removing item from the column
+    const itemIndex = _columns[column.id].items.indexOf(item.id)
+    _columns[column.id].items.splice(itemIndex, 1)
+
+    // replacing item to the column whose columndId belongs to
+    _columns[columnId].items.push(item.id)
+
+    // reorganise the global state
+    setColumns(_columns)
+    setDragging({ target: undefined, columnId: undefined, item: undefined, column: undefined })
+  }
 
   // component
   const Item = ({ item, column }) => {
@@ -22,71 +39,59 @@ function App() {
     const [title, setTitle] = useState(item.title)
     const [description, setDescription] = useState(item.description)
     const [active, setActive] = useState(false)
-    const [error, setError] = useState('')
+    const [error, setError] = useState("")
     const itemRef = useRef()
 
     const changeItemState = () => setActive((val) => !val)
 
-    const setItemColumn = (columnId) => {
-      if (column.id === columnId) return
-
-      let _columns = [...columns]
-
-      // removing item from the column
-      const itemIndex = _columns[column.id].items.indexOf(item.id)
-      _columns[column.id].items.splice(itemIndex, 1)
-
-      // replacing item to the column whose columndId belongs to
-      _columns[columnId].items.push(item.id)
-
-      // reorganise the global state
-      setColumns(_columns)
-    }
-
     const saveTask = () => {
       const _items = [...items]
-      const itemId = item.id 
-      
+      const itemId = item.id
+
       // let _item = _items.filter(i => i.id === itemId)[0]
       let _item = _items.findIndex((val) => val.id === itemId)
 
-      if(title.length < 4) {
-        setError('title')
+      if (title.length < 4) {
+        setError("title")
       } else if (description.length < 4) {
-        setError('desc')
-      } else { 
-        setError('')
+        setError("desc")
+      } else {
+        setError("")
         _items[_item] = {
           ...item,
           title,
-          description
+          description,
         }
         setItems(_items)
       }
     }
 
+    // drag events
+    const onDragItem = (e, item, column) => {
+      e.preventDefault()
+      setDragging({ target: "Item", item, column })
+    }
+
     useClickOutside(itemRef, () => (active ? changeItemState() : null))
-    useClickOutside(itemRef, () => (active ? setError('') : null))
+    useClickOutside(itemRef, () => (active ? setError("") : null))
     useClickOutside(itemRef, () => (openIndicator ? setOpenIndicator((val) => !val) : null))
 
     return (
-      <S.CardItem active={active} ref={itemRef}>
-        <S.Error active={(error === 'title' && active) ? true : false} top="10px" right="10px">Please fill in the title</S.Error>
-        <S.Error active={(error === 'desc' && active) ? true : false} top="60px" right="10px">Please fill in the description</S.Error>
+      <S.CardItem active={active} ref={itemRef} onDrag={(e) => onDragItem(e, item, column)} draggable value={item.id}>
+        <S.Error active={error === "title" && active ? true : false} top="10px" right="10px">Please fill in the title</S.Error>
+        <S.Error active={error === "desc" && active ? true : false} top="60px" right="10px">Please fill in the description</S.Error>
         <S.CardFlex gap="0.8rem" onDoubleClick={changeItemState}>
           {!column.indicator.done ? (
             <S.Indicator size={column.indicator.size} filled={column.indicator.filled} inprogress={column.indicator.inprogress} onClick={() => setOpenIndicator((val) => !val)} />
           ) : (
             <img src={column.indicator.brand} title={column.indicator.msg} alt={column.indicator.msg} onClick={() => setOpenIndicator((val) => !val)} />
           )}
-          {active 
-          ? <S.Input value={title} onChange={(e) => setTitle(e.target.value)} />
-          : <S.Text active={active}>{!openIndicator ? item.title : ""}</S.Text>}
+          {active ? <S.Input value={title} onChange={(e) => setTitle(e.target.value)} /> : <S.Text active={active}>{!openIndicator ? item.title : ""}</S.Text>}
           {openIndicator ? (
             <S.FlexIndicator>
-              <S.Indicator title="To do" size="8px" filled="#909090" inprogress={false} onClick={() => setItemColumn(0)} />
-              <S.Indicator title="In Progress" size="8px" filled="#ffffff" inprogress={true} onClick={() => setItemColumn(1)} />
-              <img src={Done} title="Done" alt="Done" onClick={() => setItemColumn(2)} />
+              <S.Indicator title="To do" size="8px" filled="#909090" inprogress={false} onClick={() => setItemColumn(0, item, column)} />
+              <S.Indicator title="In Progress" size="8px" filled="#ffffff" inprogress={true} onClick={() => setItemColumn(1, item, column)} />
+              <img src={Done} title="Done" alt="Done" onClick={() => setItemColumn(2, item, column)} />
             </S.FlexIndicator>
           ) : null}
         </S.CardFlex>
@@ -112,30 +117,29 @@ function App() {
   const NewTask = () => {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
-    const [error, setError] = useState('')
     const taskRef = useRef()
+    const [error, setError] = useState("")
 
     useClickOutside(taskRef, () => {
       setNewTask(false)
-      setError('')
+      setError("")
       setDragging({ target: undefined, columnId: undefined })
     })
 
     const createTask = () => {
-      setDragging({ target: undefined, columnId: undefined })
-      if(title.length < 4) {
-        setError('title')
+      if (title.length < 4) {
+        setError("title")
       } else if (description.length < 4) {
-        setError('desc')
+        setError("desc")
       } else {
-        setError('')
+        // setError("")
         // create a new task
         let _items = [...items]
         const itemId = _items.length
         _items.push({
           id: itemId,
           title,
-          description
+          description,
         })
         // link task in the chosen column
         const columnId = dragging.columnId
@@ -150,19 +154,20 @@ function App() {
 
     return (
       <S.NewTask ref={taskRef}>
-        <S.Error active={error === 'title' ? true : false} top="10px" right="-150px">Please fill in the title</S.Error>
-        <S.Error active={error === 'desc' ? true : false}>Please fill in the description</S.Error>
+        <S.Error active={error === "title" ? true : false} top="10px" right="-150px">Please fill in the title</S.Error>
+        <S.Error active={error === "desc" ? true : false}>Please fill in the description</S.Error>
         <S.CardFlex>
           <img src={Done} alt="" />
           <S.Input value={title} onChange={(e) => setTitle(e.target.value)} />
         </S.CardFlex>
         <S.CardArea defaultValue={description} onChange={(e) => setDescription(e.target.value)} />
         <S.CardFlex gap="0.5rem" style={{ marginLeft: "16px" }}>
-          <S.CardBtn discard 
+          <S.CardBtn
+            discard
             onClick={() => {
-              setNewTask(false) 
+              setNewTask(false)
               setDragging({ target: undefined, columnId: undefined })
-              setError('')
+              setError("")
             }}
           >
             <img src={Discard} alt="Discard changes" />
@@ -179,7 +184,7 @@ function App() {
 
   // functions
   const setAnimations = (target, animate = true) => {
-    if (target.getAttribute('value') === 'Card') {
+    if (target.getAttribute("value") === "Card") {
       if (animate) {
         target.style.transform = "translateY(-15px) rotate(1.2deg)"
         target.style.backgroundColor = "#f2f2f240"
@@ -192,21 +197,21 @@ function App() {
 
   const columnDragOver = (e, column) => {
     e.preventDefault()
-    if(dragging.target === 'Task') {
+    if (dragging.target === "Task" || dragging.target === "Item") {
       setAnimations(e.target)
-      setDragging({...dragging, columnId: column.id})
+      setDragging({ ...dragging, columnId: column.id })
     }
-    
+    // sort items
   }
 
   const columnDragLeave = (e, column) => {
     e.preventDefault()
-    if(dragging.target === 'Task') setAnimations(e.target, false)
+    if (dragging.target === "Task" || dragging.target === "Item") setAnimations(e.target, false)
   }
 
   const columnDragDrop = (e, column) => {
     e.preventDefault()
-    if(dragging.target === 'Task') setAnimations(e.target, false)
+    if (dragging.target === "Task" || dragging.target === "Item") setAnimations(e.target, false)
 
     if (dragging.target === undefined || dragging.columnId === undefined) return
 
@@ -217,6 +222,7 @@ function App() {
         setNewTask(true)
         break
       case "Item":
+        setItemColumn(dragging.columnId, dragging.item, dragging.column)
         break
       default:
         break
