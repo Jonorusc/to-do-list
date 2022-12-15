@@ -50,19 +50,16 @@ export const $columns = [
 export const $items = [
   {
     id: 0,
-    active: false,
     title: 'Get the trash out',
     description: 'im going',
   },
   {
     id: 1,
-    active: false,
     title: 'Bathe the dog',
     description: 'My dog is crazy!',
   },
   {
     id: 2,
-    active: false,
     title: 'Pay my rent',
     description: 'The best day',
   },
