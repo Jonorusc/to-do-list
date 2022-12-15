@@ -12,7 +12,8 @@ export const $columns = [
       brand: null,
       inprogress: false,
       done: false,
-    }
+    },
+    items: [0]
   },
   {
     id: 1,
@@ -24,7 +25,8 @@ export const $columns = [
       brand: null,
       inprogress: true,
       done: false,
-    }
+    },
+    items: [1]
   },
   {
     id: 2,
@@ -40,28 +42,26 @@ export const $columns = [
       brand: Done,
       inprogress: false,
       done: true,
-    }
+    },
+    items: [2]
   }
 ]
 
 export const $items = [
   {
     id: 0,
-    status: 0,
     active: false,
     title: 'Get the trash out',
     description: 'im going',
   },
   {
     id: 1,
-    status: 1,
     active: false,
     title: 'Bathe the dog',
     description: 'My dog is crazy!',
   },
   {
     id: 2,
-    status: 2,
     active: false,
     title: 'Pay my rent',
     description: 'The best day',
