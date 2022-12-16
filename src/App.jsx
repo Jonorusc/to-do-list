@@ -76,16 +76,25 @@ function App() {
     const onDragOverItem = (e, item, column) => {
       e.preventDefault()
       e.stopPropagation()
-      // sort items
+
+      const draggableEl = document.querySelector('[value="dragging"]')
       const cards = document.querySelectorAll('[value="CardBody"]')
       const card = cards[column.id]
       const afterEl = getDragAfterElement(card, e.clientY)
-      const draggableEl = document.querySelector('[value="dragging"]')
+      
+      const draggableItemColumn = draggableEl !== null ? draggableEl.getAttribute('tabIndex') : null
+      if(draggableItemColumn !== column.id && draggableItemColumn !== null)
+        // if the user has changed column
+        // setItemColumn(column.id, item, column)
+        return
+
+      // sort items
       if (!afterEl === null || !afterEl === undefined) {
         // some logic here
         return
       } else {
-        if(draggableEl == null) return
+        if(draggableEl == null || afterEl === undefined) return
+        
         card.insertBefore(draggableEl, afterEl)
         // use slice to replace items in the global state
         // arr.splice(to, 0, arr.splice(from, 1)[0]);
@@ -104,7 +113,7 @@ function App() {
         onDrag={(e) => onDragItem(e, item, column)}
         onDragOver={(e) => onDragOverItem(e, item, column)}
         value={dragging.item === item ? "dragging" : "toSort"}
-        tabIndex={item.id}
+        tabIndex={column.id}
       >
         {error === "title" ? (
           <S.Error active={active ? true : false} top="10px" right="10px">
