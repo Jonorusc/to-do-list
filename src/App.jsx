@@ -1,5 +1,6 @@
 import * as S from "./components/styles"
 import useClickOutside from "./helpers/clickOutSide"
+import getDragAfterElement from "./helpers/afterDragElement"
 
 import { $columns, $items } from "./data/data"
 
@@ -72,14 +73,49 @@ function App() {
       setDragging({ target: "Item", item, column })
     }
 
+    const onDragOverItem = (e, item, column) => {
+      e.preventDefault()
+      e.stopPropagation()
+      // sort items
+      const cards = document.querySelectorAll('[value="CardBody"]')
+      const card = cards[column.id]
+      const afterEl = getDragAfterElement(card, e.clientY)
+      const draggableEl = document.querySelector('[value="dragging"]')
+      if (!afterEl === null || !afterEl === undefined) {
+        // some logic here
+        return
+      } else {
+        if(draggableEl == null) return
+        card.insertBefore(draggableEl, afterEl)
+        // use slice to replace items in the global state
+        // arr.splice(to, 0, arr.splice(from, 1)[0]);
+      }
+    }
+
     useClickOutside(itemRef, () => (active ? changeItemState() : null))
     useClickOutside(itemRef, () => (active ? setError("") : null))
     useClickOutside(itemRef, () => (openIndicator ? setOpenIndicator((val) => !val) : null))
 
     return (
-      <S.CardItem active={active} ref={itemRef} onDrag={(e) => onDragItem(e, item, column)} draggable value={item.id}>
-        <S.Error active={error === "title" && active ? true : false} top="10px" right="10px">Please fill in the title</S.Error>
-        <S.Error active={error === "desc" && active ? true : false} top="60px" right="10px">Please fill in the description</S.Error>
+      <S.CardItem
+        draggable
+        active={active}
+        ref={itemRef}
+        onDrag={(e) => onDragItem(e, item, column)}
+        onDragOver={(e) => onDragOverItem(e, item, column)}
+        value={dragging.item === item ? "dragging" : "toSort"}
+        tabIndex={item.id}
+      >
+        {error === "title" ? (
+          <S.Error active={active ? true : false} top="10px" right="10px">
+            Please fill in the title
+          </S.Error>
+        ) : null}
+        {error === "desc" ? (
+          <S.Error active={active ? true : false} top="60px" right="10px">
+            Please fill in the description
+          </S.Error>
+        ) : null}
         <S.CardFlex gap="0.8rem" onDoubleClick={changeItemState}>
           {!column.indicator.done ? (
             <S.Indicator size={column.indicator.size} filled={column.indicator.filled} inprogress={column.indicator.inprogress} onClick={() => setOpenIndicator((val) => !val)} />
@@ -154,7 +190,9 @@ function App() {
 
     return (
       <S.NewTask ref={taskRef}>
-        <S.Error active={error === "title" ? true : false} top="10px" right="-150px">Please fill in the title</S.Error>
+        <S.Error active={error === "title" ? true : false} top="10px" right="-150px">
+          Please fill in the title
+        </S.Error>
         <S.Error active={error === "desc" ? true : false}>Please fill in the description</S.Error>
         <S.CardFlex>
           <img src={Done} alt="" />
@@ -201,7 +239,6 @@ function App() {
       setAnimations(e.target)
       setDragging({ ...dragging, columnId: column.id })
     }
-    // sort items
   }
 
   const columnDragLeave = (e, column) => {
@@ -249,7 +286,7 @@ function App() {
                   {column.brand ? <img src={column.brand.head} title={column.brand.msg} alt={column.brand.msg} /> : null}
                   <S.Htitle>{column.name}</S.Htitle>
                 </S.CardHead>
-                <S.CardBody>
+                <S.CardBody value="CardBody">
                   {_items.map((item, key) => {
                     return <Item item={item} column={column} key={key} />
                   })}

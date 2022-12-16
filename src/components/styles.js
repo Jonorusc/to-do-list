@@ -135,6 +135,7 @@ export const Card = styled(FlexColumn)`
   border-radius: 40px;
   box-sizing: border-box;
   transition: all 0.2s;
+  overflow: hidden;
 `
 export const CardHead = styled(Flex)`
   padding: 0 10px;
@@ -153,6 +154,9 @@ export const CardBody = styled(FlexColumn)`
   row-gap: 8px;
   max-height: 350px;
   box-sizing: border-box;
+  &:hover {
+    overflow: auto;
+  }
 `
 
 export const CardItem = styled(FlexColumn)`
@@ -165,10 +169,9 @@ export const CardItem = styled(FlexColumn)`
   border-radius: ${(props) => (props.active ? "20px" : "none")};
   transition: all 0.3s;
   position: relative;
-  &:active {
-    border: 1px dashed #212121;
-    visibility: 0.6;
-    border-radius: 20px;
+  border-radius: 20px;
+  &:hover {
+    /* border: 1px dashed #212121; */
   }
 `
 

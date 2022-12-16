@@ -1,7 +1,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
 
 function getDragAfterElement(cards, y) {
-  const draggableItems = [...cards.querySelectorAll('[draggable:value="dragging"]')]
+  const draggableItems = [...cards.querySelectorAll('[value="toSort"]')]
 
   return draggableItems.reduce((closest, child) => {
     const box = child.getBoundingClientRect()
