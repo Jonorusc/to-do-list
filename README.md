@@ -11,7 +11,7 @@ Double Click on a task to open more informations.
 click on the indicator to the left of the task to change its status (to do, in progress and done) or move the task between columns
 
 
-![](todolist.gif.gif)
+![](todolist.gif)
 
 
 
