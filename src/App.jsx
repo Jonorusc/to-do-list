@@ -83,7 +83,7 @@ function App() {
       const afterEl = getDragAfterElement(card, e.clientY)
       
       const draggableItemColumn = draggableEl !== null ? draggableEl.getAttribute('tabIndex') : null
-      if(draggableItemColumn !== column.id && draggableItemColumn !== null)
+      if(!draggableItemColumn === column.id && draggableItemColumn !== null)
         // if the user has changed column
         // setItemColumn(column.id, item, column)
         return
