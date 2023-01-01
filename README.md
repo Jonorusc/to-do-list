@@ -1,7 +1,7 @@
 # To-do list code challenge
 
 ## update 
-refactored version and solved the bugs of arrays manipulation, objects
+refactored version and solved the bugs of arrays manipulation and objects
 
 
 Double Click on a task to open more informations.  
